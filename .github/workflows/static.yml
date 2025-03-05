@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-4">
+    <div class="max-w-lg mx-auto bg-white p-6 rounded shadow-md">
+
+        <div class="mb-4">
+            <label for="keyword" class="block mb-2">Select review type:</label>
+            <select id="keyword" class="w-full p-2 border rounded" onchange="generateReview()">
+                <option value="excellent service">Excellent Service</option>
+                <option value="friendly staff">Friendly Staff</option>
+                <option value="great experience">Great Experience</option>
+                <option value="highly recommended">Highly Recommended</option>
+                <option value="efficient and professional">Efficient and Professional</option>
+            </select>
+        </div>
+
+        <textarea id="customReview" class="mt-4 w-full p-4 border rounded min-h-[400px] text-base text-lg" placeholder="Select an option to generate a review..."></textarea>
+
+        <button onclick="generateReview()" class="mt-4 w-full bg-blue-500 text-white p-2 rounded">Generate Review</button>
+        <button onclick="regenerateReview()" class="mt-2 w-full bg-yellow-500 text-white p-2 rounded">Regenerate Review</button>
+        <button onclick="copyToClipboard()" class="mt-2 w-full bg-green-500 text-white p-2 rounded">Copy to Clipboard</button>
+    </div>
+
+    <script>
+        // Generate initial keywords when page loads
+        window.onload = function() {
+            generateNewKeywords();
+        };
+
+        function generateReview() {
+            const keyword = document.getElementById("keyword").value;
+            document.getElementById("customReview").value = "Generating AI review...";
+            generateAIReview(keyword);
+        }
+
+        function regenerateReview() {
+            const keyword = document.getElementById("keyword").value;
+            document.getElementById("customReview").value = "Regenerating AI review...";
+            generateAIReview(keyword);
+        }
+
+        function generateAIReview(keyword) {
+            // Generate a unique review each time based on the keyword
+
+            // First sentence options
+            const firstSentences = [
+                `I was absolutely blown away by the ${keyword} at this establishment.`,
+                `The ${keyword} at this business exceeded all my expectations.`,
+                `I cannot say enough good things about the ${keyword} I experienced here.`,
+                `If you're looking for ${keyword}, this is definitely the place to go.`,
+                `My experience with the ${keyword} at this place was truly exceptional.`,
+                `I've never encountered such amazing ${keyword} anywhere else before.`,
+                `The ${keyword} here is on a completely different level than competitors.`,
+                `From the moment I walked in, the ${keyword} stood out as exceptional.`,
+                `I was immediately impressed by the outstanding ${keyword} they offer.`,
+                `The level of ${keyword} at this business is simply unparalleled.`,
+                `I wasn't expecting such incredible ${keyword} when I visited, but was pleasantly surprised.`,
+                `As someone who values ${keyword}, I was thoroughly impressed by what they offer here.`
+            ];
+
+            // Second sentence options
+            const secondSentences = [
+                `The staff went above and beyond to ensure all my needs were met promptly and with a smile.`,
+                `Everyone I interacted with was professional, attentive, and genuinely concerned about my satisfaction.`,
+                `I've visited many similar establishments, but none compare to the level of quality found here.`,
+                `From start to finish, the entire experience felt personalized and thoughtfully crafted.`,
+                `The attention to detail and commitment to excellence was evident throughout my entire visit.`,
+                `What impressed me most was how they managed to combine efficiency with a personal touch.`,
+                `The way they handled everything made me feel like I was their only customer that day.`,
+                `Their dedication to creating an exceptional experience was apparent in every interaction.`,
+                `I particularly appreciated how they took the time to understand exactly what I was looking for.`,
+                `The team's expertise was evident in every aspect of my interaction with them.`,
+                `Not only did they meet my expectations, but they anticipated needs I didn't even know I had.`,
+                `It's clear that they've put tremendous thought into creating a seamless customer experience.`
+            ];
+
+            // Third sentence options
+            const thirdSentences = [
+                `I will definitely be returning again soon and bringing all my friends and family with me.`,
+                `This has easily become my new favorite place, and I've already planned my next visit.`,
+                `I left feeling completely satisfied and have been recommending this place to everyone I know.`,
+                `The value for money here is exceptional, making it a standout choice in the area.`,
+                `I'm already looking forward to my next visit to experience their outstanding ${keyword} again.`,
+                `If you haven't been here yet, you're truly missing out on something special.`,
+                `I can confidently say this will be my go-to spot whenever I need this service in the future.`,
+                `It's rare to find a place that consistently delivers at such a high level, but they've managed it.`,
+                `In a world where customer service is often lacking, this place restores my faith in what businesses can achieve.`,
+                `I've since told everyone in my social circle about my positive experience, and several have already visited with similar praise.`,
+                `They've earned a loyal customer for life, and I can't wait to see what innovations they bring in the future.`,
+                `Five stars doesn't seem enough to rate the exceptional experience they provided to me.`
+            ];
+
+            // Optional fourth sentence for longer reviews (randomly added)
+            const fourthSentences = [
+                `The owner should be incredibly proud of what they've created here - it truly stands out in the industry.`,
+                `In all my years as a customer, I've rarely felt so valued and appreciated by a business.`,
+                `I'm actually looking forward to needing their services again, which says everything about the quality of my experience.`,
+                `They've clearly invested in training their team to deliver consistent excellence across every touchpoint.`,
+                `The passion they have for what they do shines through in every aspect of their business.`,
+                `When businesses care this much about customer satisfaction, it creates a truly remarkable experience worth sharing.`,
+                `I wish more places understood customer service the way this establishment clearly does.`,
+                `My only regret is not discovering this place sooner - think of all the great experiences I missed!`
+            ];
+
+            // Randomly select sentences to ensure a unique review each time
+            const randomFirst = firstSentences[Math.floor(Math.random() * firstSentences.length)];
+            const randomSecond = secondSentences[Math.floor(Math.random() * secondSentences.length)];
+            const randomThird = thirdSentences[Math.floor(Math.random() * thirdSentences.length)];
+
+            // Randomly decide whether to add a fourth sentence (30% chance)
+            let review;
+            if (Math.random() < 0.3) {
+                const randomFourth = fourthSentences[Math.floor(Math.random() * fourthSentences.length)];
+                review = `${randomFirst} ${randomSecond} ${randomThird} ${randomFourth}`;
+            } else {
+                review = `${randomFirst} ${randomSecond} ${randomThird}`;
+            }
+
+            // Display the review directly in the textarea
+            document.getElementById("customReview").value = review;
+        }
+
+        function copyToClipboard() {
+            const customReview = document.getElementById("customReview").value;
+            navigator.clipboard.writeText(customReview).then(() => {
+                alert("Review copied to clipboard!");
+            });
+        }
+
+        async function generateNewKeywords() {
+            try {
+                document.getElementById("keyword").innerHTML = "<option>Generating options...</option>";
+                const apiKey = "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";
+
+                // Generate a prompt for review categories
+                const prompt = "Generate 10 different specific positive business review categories or aspects a customer might praise. Include a mix of service, product, atmosphere, and experience aspects. Return only a JSON array like this: [\"category1\", \"category2\", \"category3\", etc.]";
+
+                // Using OpenAI-compatible API
+                const response = await fetch("https://api.openai.com/v1/completions", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${apiKey}`
+                    },
+                    body: JSON.stringify({
+                        model: "text-davinci-003",
+                        prompt: prompt,
+                        max_tokens: 250,
+                        temperature: 0.8
+                    })
+                });
+
+                const result = await response.json();
+                let keywordsText = "";
+
+                if (result && result.choices && result.choices[0] && result.choices[0].text) {
+                    keywordsText = result.choices[0].text.trim();
+                    try {
+                        // Try to parse the JSON response
+                        const keywords = JSON.parse(keywordsText);
+                        if (Array.isArray(keywords) && keywords.length > 0) {
+                            populateKeywords(keywords);
+                            return;
+                        }
+                    } catch (e) {
+                        console.error("Failed to parse keywords JSON:", e);
+                    }
+                }
+
+                // Fallback if API fails or returns invalid format
+                const fallbackKeywords = [
+                    "gentle dentist", 
+                    "friendly staff", 
+                    "painless procedures", 
+                    "modern equipment", 
+                    "comprehensive care",
+                    "clear explanations",
+                    "comfortable environment",
+                    "emergency service",
+                    "affordable pricing"
+                ];
+                populateKeywords(fallbackKeywords);
+
+            } catch (error) {
+                console.error("Error generating keywords:", error);
+                // Fallback categories
+                const fallbackKeywords = [
+                    "gentle dentist", 
+                    "friendly staff", 
+                    "painless procedures", 
+                    "modern equipment", 
+                    "comprehensive care",
+                    "clear explanations",
+                    "comfortable environment",
+                    "emergency service",
+                    "affordable pricing"
+                ];
+                populateKeywords(fallbackKeywords);
+            }
+        }
+
+        function populateKeywords(keywords) {
+            const selectElement = document.getElementById("keyword");
+            selectElement.innerHTML = "";
+
+            keywords.forEach(keyword => {
+                const option = document.createElement("option");
+                option.value = keyword.toLowerCase();
+                option.textContent = keyword.charAt(0).toUpperCase() + keyword.slice(1);
+                selectElement.appendChild(option);
+            });
+
+            // Generate a review with the first keyword
+            if (keywords.length > 0) {
+                generateAIReview(keywords[0]);
+            }
+        }
+    </script>
+</body>
+</html>
